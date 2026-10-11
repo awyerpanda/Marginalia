@@ -111,7 +111,19 @@ The document's title, author and bookmarks are kept. Only the modification date 
 
 ## Hosting it yourself
 
-Marginalia is a single HTML file of about 140 KB with no server code, database or accounts. Any static host works: Netlify, Cloudflare Pages, GitHub Pages, or a folder on an existing website. Upload the file (rename it *index.html* if it is the only page) and share the link.
+Marginalia is a single HTML file of about 140 KB with no server code, database or accounts, so any static host works. Use the standalone *index.html* (it has the full page wrapper the Claude version gets automatically), not the file copied out of Claude.
+
+**Cloudflare Workers with GitHub** needs this repository layout:
+
+```
+wrangler.jsonc
+public/
+    index.html
+```
+
+*wrangler.jsonc* tells Cloudflare to serve the *public* folder. Its `name` must match the Worker's name in the Cloudflare dashboard. Leave the build command empty and the deploy command as `npx wrangler deploy`.
+
+**Netlify, Cloudflare Pages or GitHub Pages:** upload *index.html* on its own; no config file is needed.
 
 It loads three open-source libraries when the page opens:
 
