@@ -1,0 +1,10 @@
+{
+  // Must match the Worker name shown in your Cloudflare dashboard
+  "name": "marginalia",
+  "compatibility_date": "2026-06-01",
+  // Serve everything in the Public folder as a static website.
+  // Capital P matters: Cloudflare's build servers treat Public and public as different folders.
+  "assets": {
+    "directory": "./Public"
+  }
+}

@@ -1,4 +1,22 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Marginalia: a free, private PDF editor that runs in your browser. Fill forms, edit text and rearrange pages without uploading anything.">
+<meta property="og:title" content="Marginalia">
+<meta property="og:description" content="A free PDF editor that runs in your browser. Your files never leave your device.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Marginalia logo with the words: a free PDF editor that runs in your browser. Your files never leave your device.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<meta name="apple-mobile-web-app-title" content="Marginalia">
+<style>[hidden]{display:none!important}</style>
 <title>Marginalia</title>
 <meta name="theme-color" content="#5B2FD6" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#3A1E94" media="(prefers-color-scheme: dark)">
@@ -50,7 +68,7 @@ html,body{height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:14px;overflow:hidden}
 button,input{font-family:inherit}
 .app{height:100%;display:flex;flex-direction:column;min-width:0}
-.bar{background:var(--bar);border-bottom:1px solid var(--line);flex:none}
+.bar{background:var(--bar);border-bottom:3px solid #000;flex:none}
 .row{display:flex;align-items:center;gap:8px;padding:8px 16px}
 .top{flex-wrap:wrap;row-gap:6px;background:var(--brand-bar);color:#fff;
   --fg:#FFFFFF;--muted:rgba(255,255,255,.8);--line:rgba(255,255,255,.3);--bar:rgba(255,255,255,.1);
@@ -60,7 +78,10 @@ button,input{font-family:inherit}
 .top .btn.primary:hover:not(:disabled){background:#fff;filter:none;box-shadow:0 0 0 3px rgba(255,255,255,.3)}
 .top input[type=checkbox]{accent-color:#fff}
 .top .mark .t{fill:#fff}.top .mark .f{fill:#D9CCFF}.top .mark .m{stroke:var(--brand-bar)}
-.tools{overflow-x:auto;border-top:1px solid var(--line);background:var(--bar2);scrollbar-width:thin;flex-wrap:nowrap}
+.tools{overflow-x:auto;background:#FFFFFF;scrollbar-width:thin;flex-wrap:nowrap;color-scheme:light;color:#1B1730;
+  /* the tools row is always white: brand white with purple accents, in light and dark mode */
+  --bar:#FFFFFF;--bar2:#FFFFFF;--fg:#1B1730;--muted:#5D5878;--line:#D8D3E8;
+  --accent:#5B2FD6;--accent-ink:#FFFFFF;--accent-soft:#ECE6FD;--danger:#B3321F}
 .tools>*{flex:none}
 .group{display:flex;align-items:center;gap:6px}
 .spacer{flex:1 1 0;min-width:0}
@@ -165,7 +186,8 @@ select.ff{appearance:auto;padding:0 1px}
   .btn,.tool,.mini{transition:background-color .12s}
 }
 </style>
-
+</head>
+<body style="margin:0">
 <div class="app" id="app" data-tool="select">
   <header class="bar">
     <div class="row top">
@@ -2619,7 +2641,7 @@ async function makeSample(){
   T(p1,'EQUIPMENT LOAN FORM',54,86,20,fb);
   T(p1,'Riverside Community Media Lab  |  Form ML-12',54,104,10,f,gr);
   L(p1,54,113,558,1.2,ink);
-  [['Borrower name','borrower','Jane Okafor',132],['Email','email','jane.okafor@example.org',172],['Equipment','equipment','Zoom H6 audio recorder',212],
+  [['Borrower name','borrower','Random Name',132],['Email','email','random.name@example.org',172],['Equipment','equipment','Zoom H6 audio recorder',212],
    ['Serial number','serial','H6-48213',252],['Loan date','loan_date','Oct 2, 2026',292],['Return by','return_by','',332]].forEach(function(r){
     T(p1,r[0],54,r[3]-4,10,f,gr);L(p1,170,r[3],558,.6);
     field(p1,r[1],r[2],172,r[3]-1,384,17);
@@ -2677,5 +2699,5 @@ async function boot(){
 boot();
 })();
 </script>
-
-</body></html>
+</body>
+</html>
