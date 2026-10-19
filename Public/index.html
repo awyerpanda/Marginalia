@@ -1,13 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Marginalia: a free, private PDF editor that runs in your browser.">
-<style>[hidden]{display:none!important}</style>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Marginalia</title>
-</head>
-<body style="margin:0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%235B2FD6' d='M14 0H44L64 20V50A14 14 0 0 1 50 64H14A14 14 0 0 1 0 50V14A14 14 0 0 1 14 0Z'/%3E%3Cpath fill='%23C9B9FF' d='M44 0V14A6 6 0 0 0 50 20H64Z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='5.2' stroke-linecap='round' stroke-linejoin='round' d='M19 41V19L32 34L45 19V41'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' d='M16 51C24 47 30 53 37 49S48 46 51 49'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -60,7 +53,11 @@ button,input{font-family:inherit}
 .group{display:flex;align-items:center;gap:6px}
 .spacer{flex:1 1 0;min-width:0}
 .brand{display:flex;align-items:center;gap:8px;font:700 18px/1 var(--font-display);letter-spacing:-.01em;margin-right:6px}
-.mark{width:15px;height:19px;border:1.6px solid var(--accent);border-radius:2px;background:linear-gradient(90deg,transparent 4px,var(--accent) 4px 5.6px,transparent 5.6px)}
+.mark{width:24px;height:24px;flex:none;display:block}
+.credit{text-align:center;padding:22px 0 0;font-size:12px}
+.credit a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.credit a:hover{color:var(--fg)}
+.credit a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
 .btn{font:600 13px var(--font-body);height:34px;padding:0 12px;border-radius:7px;border:1px solid var(--line);background:var(--bar);color:var(--fg);display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;white-space:nowrap}
 .btn:hover:not(:disabled){background:var(--accent-soft)}
 .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
@@ -160,7 +157,7 @@ select.ff{appearance:auto;padding:0 1px}
 <div class="app" id="app" data-tool="select">
   <header class="bar">
     <div class="row top">
-      <div class="brand"><span class="mark" aria-hidden="true"></span>Marginalia</div>
+      <div class="brand"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><path fill="#5B2FD6" d="M14 0H44L64 20V50A14 14 0 0 1 50 64H14A14 14 0 0 1 0 50V14A14 14 0 0 1 14 0Z"/><path fill="#C9B9FF" d="M44 0V14A6 6 0 0 0 50 20H64Z"/><path fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" d="M19 41V19L32 34L45 19V41"/><path fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" d="M16 51C24 47 30 53 37 49S48 46 51 49"/></svg>Marginalia</div>
       <div class="group">
         <button class="btn" id="openBtn" type="button" title="Open a PDF from your device">Open PDF</button>
         <input type="file" id="fileInput" accept="application/pdf,.pdf" hidden>
@@ -197,7 +194,8 @@ select.ff{appearance:auto;padding:0 1px}
     </div>
   </header>
   <main class="stage" id="stage" aria-label="Document pages">
-    <div class="pages" id="pages"><p class="loading">Loading the sample form…</p></div>
+    <div class="pages" id="pages"><p class="loading">Loading the sample…</p></div>
+    <footer class="credit"><a href="https://www.letsengage.ca/" target="_blank" rel="noopener">Website designed &amp; developed by Engage · www.letsengage.ca</a></footer>
   </main>
   <div class="fontinfo" id="fontInfo" hidden role="status"></div>
   <div class="toast" id="toast" hidden role="status"></div>
@@ -2557,6 +2555,54 @@ async function makeSample(){
     if(value)tf.setText(value);
     return tf;
   }
+  var purple=rgb(.357,.184,.839),lilac=rgb(.788,.725,1),wash=rgb(.953,.937,1),deep=rgb(.18,.1,.42),white=rgb(1,1,1);
+  function wrap(t,font,size,w){var out=[],line='';t.split(' ').forEach(function(wd){var tr=line?line+' '+wd:wd;if(font.widthOfTextAtSize(tr,size)>w&&line){out.push(line);line=wd;}else line=tr;});if(line)out.push(line);return out;}
+  function para(pg,t,x,y,size,w,font,c,lh){var ls=wrap(t,font||f,size,w);ls.forEach(function(l,i){T(pg,l,x,y+i*(lh||size*1.42),size,font,c);});return y+ls.length*(lh||size*1.42);}
+  var p0=d.addPage([612,792]);
+  /* logo: a purple page with a folded corner, a white M and a handwritten underline */
+  var LS=56/64,lx=54,ly=H-50;
+  p0.drawSvgPath('M14 0H44L64 20V50A14 14 0 0 1 50 64H14A14 14 0 0 1 0 50V14A14 14 0 0 1 14 0Z',{x:lx,y:ly,scale:LS,color:purple});
+  p0.drawSvgPath('M44 0V14A6 6 0 0 0 50 20H64Z',{x:lx,y:ly,scale:LS,color:lilac});
+  p0.drawSvgPath('M19 41V19L32 34L45 19V41',{x:lx,y:ly,scale:LS,borderColor:white,borderWidth:5.2,borderLineCap:PL.LineCapStyle.Round});
+  p0.drawSvgPath('M16 51C24 47 30 53 37 49S48 46 51 49',{x:lx,y:ly,scale:LS,borderColor:white,borderWidth:3.4,borderLineCap:PL.LineCapStyle.Round});
+  T(p0,'Marginalia',126,84,30,fb,deep);
+  T(p0,'A free PDF editor that runs in your browser.',127,102,12,f,gr);
+  L(p0,54,128,558,1.2,purple);
+  var y=para(p0,'This page is a sample, so try anything on it: highlight a line, draw in the margin, or choose Edit text and change these words. Then choose Open PDF to work on your own file.',54,156,11.5,504);
+  /* security box */
+  var bt=y+8,items=['Nothing is uploaded. Opening, editing and saving all happen inside your browser.',
+    'No account or sign-in. No server ever receives or keeps a copy of your documents.',
+    'Pages you delete and text you replace are removed from the saved file, not just hidden.',
+    'Your original file is never changed. Save always creates a new copy.'];
+  var bh=40+items.length*19+8;
+  p0.drawRectangle({x:54,y:H-bt-bh,width:504,height:bh,color:wash});
+  p0.drawRectangle({x:54,y:H-bt-bh,width:4,height:bh,color:purple});
+  p0.drawSvgPath('M7 0L14 3V8C14 12 11 15 7 17C3 15 0 12 0 8V3Z',{x:74,y:H-bt-14,scale:1,color:purple});
+  T(p0,'Your files never leave your device',96,bt+27,13,fb,deep);
+  items.forEach(function(t,i){var yy=bt+52+i*19;p0.drawCircle({x:78,y:H-yy+3.5,size:2.2,color:purple});T(p0,t,88,yy,10.5);});
+  /* can and can't columns */
+  var cy=bt+bh+40;
+  T(p0,'What it can do',54,cy,13,fb,deep);T(p0,'What it can\'t do yet',324,cy,13,fb,deep);
+  var can=['Fill in forms, then keep them fillable or lock the answers','Edit existing text in its original font','Highlight, draw, sign, and add text, boxes and arrows','Delete or recolour table lines, shading and images','Reorder, rotate, insert and delete pages','Works on phones, tablets and computers'];
+  var cant=['Edit scanned pages (they are pictures of text)','Fill Adobe-only XFA forms, like some government forms','Create new form fields','Add certified digital signatures','Open password-locked PDFs','Edit accessibility tags'];
+  function col(list,x,good){var yy=cy+24;list.forEach(function(t){
+      p0.drawCircle({x:x+7,y:H-yy+3.5,size:7,color:good?purple:rgb(.9,.9,.93)});
+      if(good)p0.drawSvgPath('M-3.2 0.2L-1 2.6L3.4 -2.4',{x:x+7,y:H-yy+3.5,scale:1,borderColor:white,borderWidth:1.6,borderLineCap:PL.LineCapStyle.Round});
+      else p0.drawSvgPath('M-2.5 -2.5L2.5 2.5M2.5 -2.5L-2.5 2.5',{x:x+7,y:H-yy+3.5,scale:1,borderColor:gr,borderWidth:1.5,borderLineCap:PL.LineCapStyle.Round});
+      yy=para(p0,t,x+22,yy+0.5,10.5,206)+7;});return yy;}
+  var ey=Math.max(col(can,54,true),col(cant,324,false));
+  /* try it */
+  var ty=ey+22;
+  p0.drawRectangle({x:54,y:H-ty-42,width:504,height:42,borderColor:lilac,borderWidth:1});
+  T(p0,'Try it:',70,ty+25,11,fb,purple);
+  T(p0,'the next page is a sample loan form. Click a field to fill it in, then Save.',107,ty+25,11);
+  /* footer with attribution link */
+  T(p0,'Page 1 of 3',54,752,8,f,gr);
+  var cred='Website designed & developed by Engage · www.letsengage.ca',cw=f.widthOfTextAtSize(cred,8);
+  T(p0,cred,558-cw,752,8,f,purple);
+  var lnk=d.context.register(d.context.obj({Type:'Annot',Subtype:'Link',Rect:[558-cw-1,H-756,559,H-744],Border:[0,0,0],
+    A:{Type:'Action',S:'URI',URI:PL.PDFString.of('https://www.letsengage.ca/')}}));
+  p0.node.set(PL.PDFName.of('Annots'),d.context.obj([lnk]));
   var p1=d.addPage([612,792]);
   T(p1,'EQUIPMENT LOAN FORM',54,86,20,fb);
   T(p1,'Riverside Community Media Lab  |  Form ML-12',54,104,10,f,gr);
@@ -2578,7 +2624,7 @@ async function makeSample(){
   L(p1,54,640,300,.8,ink);T(p1,'Borrower signature',54,654,9,f,gr);
   L(p1,340,640,558,.8,ink);T(p1,'Date',340,654,9,f,gr);
   field(p1,'sign_date','Oct 2, 2026',342,639,214,20);
-  T(p1,'Page 1 of 2',54,752,8,f,gr);
+  T(p1,'Page 2 of 3',54,752,8,f,gr);
   var p2=d.addPage([612,792]);
   T(p2,'TERMS OF LOAN',54,86,20,fb);
   L(p2,54,100,558,1.2,ink);
@@ -2588,16 +2634,18 @@ async function makeSample(){
    '4.  Equipment may not be sublent or taken out of the province without approval.',
    '5.  Report faults to the lab desk on the day you notice them.'].forEach(function(t,i){T(p2,t,54,140+i*30,11);});
   T(p2,'Lab desk hours: Monday to Friday, 10:00 to 18:00',54,330,10,f,gr);
-  T(p2,'Page 2 of 2',54,752,8,f,gr);
+  T(p2,'Page 3 of 3',54,752,8,f,gr);
   form.updateFieldAppearances(f);
+  d.setTitle('Welcome to Marginalia');d.setCreator('Marginalia');
   return await d.save();
 }
 function sampleAnnots(pages){
-  pages[0].annots=[
+  pages[0].annots=[];
+  pages[1].annots=[
     {t:'hl',c:'#F5C400',x:52,y:318,w:54,h:17},
     {t:'pen',c:'#1F5BFF',sw:1.6,pts:[[68,628],[78,610],[86,632],[96,606],[106,630],[118,616],[132,634],[150,612],[168,628],[190,614],[214,622],[236,618]]}
   ];
-  pages[1].annots=[{t:'hl',c:'#F5C400',x:52,y:188,w:400,h:17}];
+  pages[2].annots=[{t:'hl',c:'#F5C400',x:52,y:188,w:400,h:17}];
 }
 async function boot(){
   buildToolbar();ui();
@@ -2607,7 +2655,7 @@ async function boot(){
   pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   try{
     var bytes=await makeSample();
-    await openBytes(bytes,'Equipment loan form.pdf',true);
+    await openBytes(bytes,'Welcome to Marginalia.pdf',true);
     sampleAnnots(S.pages);sync();
   }catch(err){
     console.warn(err);
@@ -2618,5 +2666,4 @@ boot();
 })();
 </script>
 
-</body>
-</html>
+</body></html>
