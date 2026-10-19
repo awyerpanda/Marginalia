@@ -179,6 +179,8 @@ select.ff{appearance:auto;padding:0 1px}
 }
 @media (max-width:640px){
   .tool span{display:none}
+  #installBtn span{display:none}
+  #installBtn{width:34px;padding:0}
   .doc .nm{max-width:16ch}
   .brand{font-size:16px}
 }
@@ -196,6 +198,7 @@ select.ff{appearance:auto;padding:0 1px}
         <button class="btn" id="openBtn" type="button" title="Open a PDF from your device">Open PDF</button>
         <input type="file" id="fileInput" accept="application/pdf,.pdf" hidden>
         <button class="btn primary" id="saveBtn" type="button" title="Save a copy with your edits (Ctrl or Cmd + S)">Save</button>
+        <button class="btn" id="installBtn" type="button" title="Install Marginalia as an app on this device" hidden></button>
       </div>
       <label class="formopt" id="formOpt" hidden title="Turn the filled-in fields into plain page content, so answers can't be changed later"><input type="checkbox" id="flatIn"> Lock answers on save</label>
       <div class="group">
@@ -911,6 +914,7 @@ var BASE=0.95, LH=1.2;
 var COLORS=['#E5322D','#F28C1A','#F5C400','#1C9A5B','#1F5BFF','#141414'];
 var IC={
   select:'<path d="M5 3l13 7-5.5 1.8L10 18z"/>',
+  install:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19.5h14"/>',
   text:'<path d="M5 6V4h14v2M12 4v16M9 20h6"/>',
   edittext:'<path d="M3 7V5h11v2M8.5 5v14M6 19h5"/><path d="M18 8v12M16 8h4M16 20h4"/>',
   hl:'<path d="M14 4l6 6-8 8H6v-6z"/><path d="M4 21h16"/>',
@@ -2417,6 +2421,29 @@ function openFile(file,force){
   });
 }
 $('#openBtn').addEventListener('click',function(){$('#fileInput').click();});
+
+/* ---------- install as an app ----------
+   Only on the hosted copy, which links a web manifest. Chrome, Edge and Android offer a
+   real install prompt; iPhone and iPad install through Share, Add to Home Screen. */
+(function(){
+  var btn=$('#installBtn'),ev=null;
+  var standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+  var ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  btn.innerHTML=icon('install')+'<span>Install app</span>';
+  if(!document.querySelector('link[rel="manifest"]')||standalone)return;
+  if(ios)btn.hidden=false;
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();ev=e;btn.hidden=false;});
+  window.addEventListener('appinstalled',function(){ev=null;btn.hidden=true;toast('Marginalia is installed. Open it from your apps like any other program.');});
+  btn.addEventListener('click',async function(){
+    if(ev){
+      var e=ev;ev=null;e.prompt();
+      try{var c=await e.userChoice;if(c&&c.outcome==='accepted')btn.hidden=true;}catch(err){}
+      if(!ev&&!ios)btn.hidden=true;
+    }else if(ios){
+      toast('To install: tap the Share button in your browser, then choose Add to Home Screen.');
+    }
+  });
+})();
 $('#fileInput').addEventListener('change',function(e){var f=e.target.files[0];e.target.value='';openFile(f,false);});
 stage.addEventListener('dragover',function(e){e.preventDefault();stage.classList.add('drop');});
 stage.addEventListener('dragleave',function(){stage.classList.remove('drop');});
